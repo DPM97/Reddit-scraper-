@@ -9,6 +9,7 @@ const fs = require('fs')
 let category, subReddit, og, page, posts;
 let arr = [];
 var x = 0;
+let pages = 1;
 
 
 const rl = readline.createInterface({
@@ -33,7 +34,7 @@ function exec() {
     page = 1;
     var posts = 25*page;
     og = 'https://old.reddit.com/r/' + subReddit + '/' + category + '/'
-    for (const page = 0; page < 1; page++) {
+    for (var i = 0; j = pages, i < j; i++) {
         request(og, function (err, res, body) {
             if (!err && res.statusCode == 200) {
                 var $ = cherio.load(body);
@@ -41,7 +42,6 @@ function exec() {
                     var title = $(this).find('a.title').text();
                     var link = $(this).find('a.title').attr('href');
                     var comments = $(this).find('li.first a').text();
-                    var upvotes = $(this).find('score.unvoted').text();
                     var number = $(this).find('span.rank').text();
                     var y = number;
                     x++
@@ -52,21 +52,21 @@ function exec() {
                         comments = comments.split(' ')[0]
                     }
 
-                    if (y === 25*page) 
+                    if (y = 25*page) 
                     {
                         page++
                         newPosts = 25*page;
                         og = 'https://old.reddit.com/r/' + subReddit + '/' + category + '/' + '?count=' + newPosts
                         console.log(newPosts)
                     } 
-                    var tag = parseInt(number);
+                    // took it out because its whack but this is if you want to number each post 
+                    // var tag = parseInt(number);
                     
                     if (link.startsWith('/r/')) {
                         arr.push({
-                            'Title': tag + '. ' + ellipsis(title, 130),
+                            'Title': ellipsis(title, 130),
                             'Link': 'https://reddit.com' + link,
                             'Comments': comments,
-                            'Upvotes': upvotes
                         });
                     }
                     logFile.write('');
